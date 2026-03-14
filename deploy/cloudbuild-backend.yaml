@@ -30,3 +30,5 @@ substitutions:
   _REGION: us-west4
   _REPO: engagingchat
   _BACKEND_SERVICE: engagingchat-api
+options:
+  logging: CLOUD_LOGGING_ONLY

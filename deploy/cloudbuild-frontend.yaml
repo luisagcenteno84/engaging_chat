@@ -29,3 +29,5 @@ substitutions:
   _REPO: engagingchat
   _FRONTEND_SERVICE: engagingchat-ui
   _API_URL: https://REPLACE-ME
+options:
+  logging: CLOUD_LOGGING_ONLY
