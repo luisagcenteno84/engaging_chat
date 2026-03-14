@@ -39,9 +39,7 @@ def _gemini_payload(messages: list[dict[str, Any]]) -> dict[str, Any]:
 
     if system_parts:
         payload['system_instruction'] = {
-            'parts': [{'text': "
-
-".join(system_parts)}]
+            'parts': [{'text': "\n\n".join(system_parts)}]
         }
 
     return payload
