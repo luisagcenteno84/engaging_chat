@@ -39,7 +39,9 @@ def _gemini_payload(messages: list[dict[str, Any]]) -> dict[str, Any]:
 
     if system_parts:
         payload['system_instruction'] = {
-            'parts': [{'text': "\n\n".join(system_parts)}]
+            'parts': [{'text': "
+
+".join(system_parts)}]
         }
 
     return payload
@@ -124,7 +126,7 @@ def health_check() -> dict[str, Any]:
 
     if provider == 'gemini':
         api_key = (settings.gemini_api_key or '').strip()
-    if not api_key:
+        if not api_key:
             raise RuntimeError('GEMINI_API_KEY is not set')
         base_url = (settings.gemini_base_url or 'https://generativelanguage.googleapis.com/v1beta').rstrip('/')
         url = f"{base_url}/models"
