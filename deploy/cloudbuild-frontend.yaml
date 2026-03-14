@@ -1,0 +1,31 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-f', 'frontend_streamlit/Dockerfile', '-t', '${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPO}/engagingchat-frontend:${_TAG}', 'frontend_streamlit']
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', '${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPO}/engagingchat-frontend:${_TAG}']
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - 'run'
+      - 'deploy'
+      - '${_FRONTEND_SERVICE}'
+      - '--image'
+      - '${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPO}/engagingchat-frontend:${_TAG}'
+      - '--region'
+      - '${_REGION}'
+      - '--platform'
+      - 'managed'
+      - '--allow-unauthenticated'
+      - '--min-instances'
+      - '0'
+      - '--max'
+      - '1'
+      - '--set-env-vars'
+      - 'API_URL=${_API_URL}'
+images:
+  - '${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPO}/engagingchat-frontend:${_TAG}'
+substitutions:
+  _REGION: us-west4
+  _REPO: engagingchat
+  _FRONTEND_SERVICE: engagingchat-ui
+  _API_URL: https://REPLACE-ME

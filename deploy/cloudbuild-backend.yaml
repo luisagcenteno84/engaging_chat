@@ -1,0 +1,32 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-f', 'backend/Dockerfile', '-t', '${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPO}/engagingchat-backend:${_TAG}', 'backend']
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', '${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPO}/engagingchat-backend:${_TAG}']
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - 'run'
+      - 'deploy'
+      - '${_BACKEND_SERVICE}'
+      - '--image'
+      - '${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPO}/engagingchat-backend:${_TAG}'
+      - '--region'
+      - '${_REGION}'
+      - '--platform'
+      - 'managed'
+      - '--allow-unauthenticated'
+      - '--min-instances'
+      - '0'
+      - '--max'
+      - '1'
+      - '--set-env-vars'
+      - 'APP_ENV=prod,PROJECT_ID=$PROJECT_ID,FIRESTORE_DATABASE=(default),ALLOW_GUEST=true,LLM_PROVIDER=gemini,GEMINI_MODEL=gemini-2.5-flash'
+      - '--set-secrets'
+      - 'GEMINI_API_KEY=gemini-api-key:latest'
+images:
+  - '${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPO}/engagingchat-backend:${_TAG}'
+substitutions:
+  _REGION: us-west4
+  _REPO: engagingchat
+  _BACKEND_SERVICE: engagingchat-api
