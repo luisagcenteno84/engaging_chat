@@ -25,6 +25,7 @@ steps:
 images:
   - '${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPO}/engagingchat-frontend:${_TAG}'
 substitutions:
+  _TAG: latest
   _REGION: us-west4
   _REPO: engagingchat
   _FRONTEND_SERVICE: engagingchat-ui
