@@ -24,11 +24,14 @@ steps:
       - 'API_URL=${_API_URL}'
 images:
   - '${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPO}/engagingchat-frontend:${_TAG}'
+# When deploying: set _API_URL to your backend Cloud Run URL, e.g.:
+#   gcloud builds submit --config=deploy/cloudbuild-frontend.yaml --substitutions=_API_URL=https://engagingchat-api-XXXXXX.run.app .
+# Or get it with: gcloud run services describe engagingchat-api --region=us-west4 --format='value(status.url)'
 substitutions:
   _TAG: latest
   _REGION: us-west4
   _REPO: engagingchat
   _FRONTEND_SERVICE: engagingchat-ui
-  _API_URL: https://REPLACE-ME
+  _API_URL: https://engagingchat-api-120423998665.us-west4.run.app
 options:
   logging: CLOUD_LOGGING_ONLY
